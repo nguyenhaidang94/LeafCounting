@@ -35,4 +35,4 @@ class Resnet(object):
         self.model.compile(loss='mse', optimizer=optimizer)
 
     def summary(self):
-        print(self.model.summary())
+        self.model.summary()
