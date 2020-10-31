@@ -18,6 +18,11 @@ class Resnet(object):
         self.y_test = None
         self.image_size = None
 
+    def _preprocess_data(self, batch_size):
+        test_datagen = ImageDataGenerator()
+        test_generator = test_datagen.flow(self.X_test, self.y_test, batch_size=batch_size)
+        return train_generator, val_generator, test_generator
+
     def load_data(self, base_dir, sub_dirs, image_size, train_ratio, val_ratio):
         self.image_size = image_size
         self.X_train, self.y_train, self.X_val, self.y_val, self.X_test, self.y_test \
@@ -39,3 +44,13 @@ class Resnet(object):
 
     def summary(self):
         self.model.summary()
+
+    def train(self, batch_size, n_epochs):
+        train_datagen = ImageDataGenerator()
+        train_generator = train_datagen.flow(self.X_train, self.y_train, batch_size=batch_size)
+        val_datagen = ImageDataGenerator()
+        val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
+
+        steps_per_epoch = int(self.X_train.shape[0]/batch_size)
+        self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
+            , validation_data=val_generator)

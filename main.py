@@ -1,4 +1,5 @@
-from configs.global_vars import BASE_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO, OPTIMIZER
+from configs.global_vars import BASE_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO\
+    , OPTIMIZER, BATCH_SIZE, N_EPOCHS
 from model.resnet import Resnet
 
 def run():
@@ -9,8 +10,10 @@ def run():
     model.build()
     print("Summary")
     model.summary()
-    print("Compile")
+    print("Compile model")
     model.compile(optimizer=OPTIMIZER)
+    print("Train model")
+    model.train(BATCH_SIZE, N_EPOCHS)
 
 if __name__ == '__main__':
     run()
