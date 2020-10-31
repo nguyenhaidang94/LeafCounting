@@ -15,7 +15,7 @@ class DataLoader(object):
         rgb_img = bgr_img[...,::-1]/255.0
         return rgb_img
 
-    def _load_data_in_subdir(self):
+    def _load_data_in_subdir(self, base_dir, sub_dir, target_size):
         img_pattern_path = os.path.join(base_dir, sub_dir, 'plant*_rgb.png')
         img_paths = glob.glob(img_pattern_path)
         # read csv containing leaf counting
