@@ -1,3 +1,4 @@
+import time
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
@@ -5,6 +6,7 @@ from tensorflow.keras import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from dataloader.dataloader import DataLoader
+from utils.time_utils import get_current_time
 
 class Resnet(object):
     
@@ -54,3 +56,5 @@ class Resnet(object):
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
         self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
             , validation_data=val_generator)
+
+        self.model.save("model_{}".format(get_current_time()))
