@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 from utils.data_utils import train_val_test_split
 
+FILE_REGEX_TEMPLATE = "CVPPP2017_LCC_training\/{}\/(plant\d+_rgb.png)"
+
 class DataLoader(object):
 
     def _load_rgb_img(self, img_path, target_size=None):
