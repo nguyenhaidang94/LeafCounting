@@ -22,6 +22,9 @@ class Resnet(object):
         self.image_size = image_size
         self.X_train, self.y_train, self.X_val, self.y_val, self.X_test, self.y_test \
             = DataLoader().load_data(base_dir, sub_dirs, image_size, train_ratio, val_ratio)
+        print("X_train:", X_train.shape)
+        print("X_val:", X_val.shape)
+        print("X_test:", X_test.shape)
 
     def build(self):
         base = ResNet50(include_top=False, input_shape=self.image_size)
