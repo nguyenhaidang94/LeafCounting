@@ -10,7 +10,7 @@ FILE_REGEX_TEMPLATE = "CVPPP2017_LCC_training\/{}\/(plant\d+_rgb.png)"
 
 class DataLoader(object):
 
-    def _load_rgb_img(self, img_path, target_size=None):
+    def load_rgb_img(self, img_path, target_size=None):
         bgr_img = cv2.imread(img_path, flags=cv2.IMREAD_COLOR)
         if target_size != None:
             bgr_img = cv2.resize(bgr_img, target_size)
@@ -34,7 +34,7 @@ class DataLoader(object):
                 values = leaf_count_csv.loc[leaf_count_csv['name']==name, 'count'].values
                 if len(values) > 0:
                     # get image, label
-                    X.append(self._load_rgb_img(img_path, target_size))
+                    X.append(self.load_rgb_img(img_path, target_size))
                     y.append(values[0])
                 else:
                     print("Couldn't find count with name {} in the csv file".format(name))

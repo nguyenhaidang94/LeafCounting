@@ -68,5 +68,9 @@ class Resnet(object):
         model_folder = os.path.join(MODEL_DIR, "model_{}".format(get_current_time()))
         self.model.save(model_folder)
 
-    def predict(self):
-        # self.model.predict()
+    def predict(self, img_path):
+        (w,h,c) = self.image_size
+        x = DataLoader().load_rgb_img(img_path, target_size=(w,h))
+        x = np.reshape(x, (1, w, h, c))
+        result = self.model.predict(x)
+        return int(result[0][0])
