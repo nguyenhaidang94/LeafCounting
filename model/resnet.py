@@ -57,4 +57,8 @@ class Resnet(object):
         self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
             , validation_data=val_generator)
 
+    def evaluate(self):
+        return self.model.evaluate(self.X_test, self.y_test)
+
+    def save(self):
         self.model.save("model_{}".format(get_current_time()))

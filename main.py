@@ -14,6 +14,11 @@ def run():
     model.compile(optimizer=OPTIMIZER)
     print("Train model")
     model.train(BATCH_SIZE, N_EPOCHS)
+    print("Evaluate on test set")
+    result = model.evaluate()
+    print(result)
+    print("Save model")
+    model.save()
 
 if __name__ == '__main__':
     run()
