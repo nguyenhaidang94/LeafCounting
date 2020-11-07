@@ -1,5 +1,6 @@
 import time
 import os
+import numpy as np
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
@@ -60,11 +61,12 @@ class Resnet(object):
             , validation_data=val_generator)
 
     def evaluate(self):
-        return self.model.evaluate(self.X_test, self.y_test)
+        y_test_np = np.array(self.y_test)
+        return self.model.evaluate(self.X_test, y_test_np)
 
     def save(self):
         model_folder = os.path.join(MODEL_DIR, "model_{}".format(get_current_time()))
         self.model.save(model_folder)
 
     def predict(self):
-        self.model.predict()
+        # self.model.predict()
