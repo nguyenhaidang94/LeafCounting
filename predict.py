@@ -9,3 +9,6 @@ def run():
     print("Evaluate")
     result = model.evaluate()
     print(result)
+
+if __name__ == '__main__':
+    run()
