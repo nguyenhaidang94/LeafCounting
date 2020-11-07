@@ -1,4 +1,5 @@
 import time
+import os
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
@@ -7,6 +8,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
+from configs.global_vars import MODEL_DIR
 
 class Resnet(object):
     
@@ -61,4 +63,8 @@ class Resnet(object):
         return self.model.evaluate(self.X_test, self.y_test)
 
     def save(self):
-        self.model.save("model_{}".format(get_current_time()))
+        model_folder = os.path.join(MODEL_DIR, "model_{}".format(get_current_time()))
+        self.model.save(model_folder)
+
+    def predict(self):
+        self.model.predict()
