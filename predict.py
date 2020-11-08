@@ -2,6 +2,7 @@ import os
 import numpy as np
 from tensorflow.keras.models import load_model
 from configs.global_vars import MODEL_DIR, DATA_DIR, IMAGE_SIZE
+from dataloader.dataloader import DataLoader
 
 def run():
     print("Load model")
