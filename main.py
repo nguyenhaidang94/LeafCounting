@@ -10,7 +10,7 @@ def run():
         print("Load data")
         model.load_data(DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO)
         print("Build model")
-        model.build()
+        model.build(train_base_model=False)
         print("Summary")
         model.summary()
         print("Compile model")

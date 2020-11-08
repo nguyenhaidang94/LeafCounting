@@ -37,8 +37,10 @@ class Resnet(object):
         print("X_val:", self.X_val.shape)
         print("X_test:", self.X_test.shape)
 
-    def build(self):
+    def build(self, train_base_model=True):
         base = ResNet50(include_top=False, input_shape=self.image_size)
+        if train_base_model == False:
+            base.trainable = False
         x = Flatten()(base.output)
         x = Dense(1024, activation='relu')(x)
         x = Dense(512, activation='relu')(x)

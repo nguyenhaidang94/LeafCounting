@@ -19,7 +19,7 @@ def run():
         x = np.reshape(x, (1, w, h, c))
         result = model.predict(x)
         print("Number of leaves: {}".format(int(result[0][0])))
-        send_email("Prim", "Prediction has finished!")
+        send_email("Prim info", "Prediction has finished!")
     except Exception as e:
         traceback.print_exc()
         send_email("Prim error", str(e))
