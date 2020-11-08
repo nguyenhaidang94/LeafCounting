@@ -16,7 +16,7 @@ def run():
     model.train(BATCH_SIZE, N_EPOCHS)
     print("Evaluate on test set")
     result = model.evaluate()
-    print(result)
+    print("Loss: {}".format(result))
     print("Save model")
     model.save()
 
