@@ -15,8 +15,7 @@ def run():
     x = DataLoader().load_rgb_img(img_path, target_size=(w,h))
     x = np.reshape(x, (1, w, h, c))
     result = model.predict(x)
-    print(result)
-    print(int(result[0][0]))
+    print("Number of leaves: {}".format(int(result[0][0])))
 
 if __name__ == '__main__':
     run()
