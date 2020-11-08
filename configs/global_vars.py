@@ -12,6 +12,6 @@ BATCH_SIZE = 32
 N_EPOCHS = 50
 # for data augmentation
 ROTATION_RANGE = 170
-ZOOM_RANGE = [0.0, 0.1]
+ZOOM_RANGE = [1.0, 1.1]
 HORIZONTAL_FLIP = True
 VERTICAL_FLIP = True
