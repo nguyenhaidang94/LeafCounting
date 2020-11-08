@@ -10,6 +10,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
 from configs.global_vars import MODEL_DIR
+from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP
 
 class Resnet(object):
     
@@ -51,7 +52,8 @@ class Resnet(object):
         self.model.summary()
 
     def train(self, batch_size, n_epochs):
-        train_datagen = ImageDataGenerator()
+        train_datagen = ImageDataGenerator(rotation_range=ROTATION_RANGE, zoom_range=ZOOM_RANGE\
+            , horizontal_flip=HORIZONTAL_FLIP, vertical_flip=VERTICAL_FLIP)
         train_generator = train_datagen.flow(self.X_train, self.y_train, batch_size=batch_size)
         val_datagen = ImageDataGenerator()
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
