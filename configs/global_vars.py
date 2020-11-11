@@ -8,7 +8,7 @@ TRAIN_RATIO = 0.5
 VAL_RATIO = 0.25
 LEARNING_RATE = 1e-3
 OPTIMIZER = Adam(learning_rate=LEARNING_RATE)
-BATCH_SIZE = 32
+BATCH_SIZE = 6
 N_EPOCHS = 50
 TRAIN_BASE_MODEL = True
 # early stopping epochs
