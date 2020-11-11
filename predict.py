@@ -16,9 +16,13 @@ def run():
         print("Load samples")
         img_paths = []
         img_paths.append(os.path.join(DATA_DIR, 'A1', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A1', 'plant161_rgb.png'))
         img_paths.append(os.path.join(DATA_DIR, 'A2', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A2', 'plant039_rgb.png'))
         img_paths.append(os.path.join(DATA_DIR, 'A3', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A3', 'plant027_rgb.png'))
         img_paths.append(os.path.join(DATA_DIR, 'A4', 'plant0001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A4', 'plant0857_rgb.png'))
         (w,h,c) = IMAGE_SIZE
         print("Predict")
         for i in range(len(img_paths)):
