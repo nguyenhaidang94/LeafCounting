@@ -6,11 +6,13 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
 from tensorflow.keras import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import EarlyStopping
 
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
 from configs.global_vars import MODEL_DIR
 from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP
+from configs.global_vars import ES_EPOCHS
 
 class Resnet(object):
     
@@ -61,8 +63,10 @@ class Resnet(object):
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
 
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
-        self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
-            , validation_data=val_generator)
+        callback = EarlyStopping( monitor='val_loss', patience=ES_EPOCHS, mode='min', restore_best_weights=True)
+        history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
+            , validation_data=val_generator, callbacks=[callback])
+        return history
 
     def evaluate(self):
         y_test_np = np.array(self.y_test)
