@@ -6,19 +6,28 @@ from configs.global_vars import MODEL_DIR, DATA_DIR, IMAGE_SIZE
 from dataloader.dataloader import DataLoader
 from utils.mail_utils import send_email
 
+MODEL_NAME = ''
+
 def run():
     try:
         print("Load model")
-        model_name = os.path.join(MODEL_DIR, 'model_2020-11-08_00-48-42')
-        model = load_model(model_name)
-
-        print("Predict")
-        img_path = os.path.join(DATA_DIR, 'A1', 'plant001_rgb.png')
+        model_path = os.path.join(MODEL_DIR, MODEL_NAME)
+        model = load_model(model_path)
+        print("Load samples")
+        img_paths = []
+        img_paths.append(os.path.join(DATA_DIR, 'A1', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A2', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A3', 'plant001_rgb.png'))
+        img_paths.append(os.path.join(DATA_DIR, 'A4', 'plant0001_rgb.png'))
         (w,h,c) = IMAGE_SIZE
-        x = DataLoader().load_rgb_img(img_path, target_size=(w,h))
-        x = np.reshape(x, (1, w, h, c))
-        result = model.predict(x)
-        print("Number of leaves: {}".format(int(result[0][0])))
+        print("Predict")
+        for i in range(len(img_paths)):
+            img_path = img_paths[i]
+            print("Image: {}".format(img_path))
+            x = DataLoader().load_rgb_img(img_path, target_size=(w,h))
+            x = np.reshape(x, (1, w, h, c))
+            result = model.predict(x)
+            print("Number of leaves: {}".format(int(result[0][0])))
         send_email("Prim info", "Prediction has finished!")
     except Exception as e:
         traceback.print_exc()
