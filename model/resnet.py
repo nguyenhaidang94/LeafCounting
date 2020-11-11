@@ -62,7 +62,7 @@ class Resnet(object):
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
         if early_stopping_epochs != None:
-            callback = EarlyStopping( monitor='val_loss', patience=ES_EPOCHS, mode='min', restore_best_weights=True)
+            callback = EarlyStopping( monitor='val_loss', patience=early_stopping_epochs, mode='min', restore_best_weights=True)
             history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
                 , validation_data=val_generator, callbacks=[callback])
         else:
