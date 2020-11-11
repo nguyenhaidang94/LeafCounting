@@ -1,6 +1,6 @@
 import traceback
 from configs.global_vars import DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO\
-    , OPTIMIZER, BATCH_SIZE, N_EPOCHS
+    , OPTIMIZER, BATCH_SIZE, N_EPOCHS, ES_EPOCHS
 from model.resnet import Resnet
 from utils.mail_utils import send_email
 
@@ -10,13 +10,13 @@ def run():
         print("Load data")
         model.load_data(DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO)
         print("Build model")
-        model.build(train_base_model=False)
+        model.build(train_base_model=True)
         print("Summary")
         model.summary()
         print("Compile model")
         model.compile(optimizer=OPTIMIZER)
         print("Train model")
-        model.train(BATCH_SIZE, N_EPOCHS)
+        model.train(BATCH_SIZE, N_EPOCHS, ES_EPOCHS)
         print("Evaluate on test set")
         result = model.evaluate()
         print("Loss: {}".format(result))

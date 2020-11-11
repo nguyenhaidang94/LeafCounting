@@ -12,7 +12,6 @@ from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
 from configs.global_vars import MODEL_DIR
 from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP
-from configs.global_vars import ES_EPOCHS
 
 class Resnet(object):
     
@@ -55,17 +54,20 @@ class Resnet(object):
     def summary(self):
         self.model.summary()
 
-    def train(self, batch_size, n_epochs):
+    def train(self, batch_size, n_epochs, early_stopping_epochs=None):
         train_datagen = ImageDataGenerator(rotation_range=ROTATION_RANGE, zoom_range=ZOOM_RANGE\
             , horizontal_flip=HORIZONTAL_FLIP, vertical_flip=VERTICAL_FLIP)
         train_generator = train_datagen.flow(self.X_train, self.y_train, batch_size=batch_size)
         val_datagen = ImageDataGenerator()
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
-
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
-        callback = EarlyStopping( monitor='val_loss', patience=ES_EPOCHS, mode='min', restore_best_weights=True)
-        history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
-            , validation_data=val_generator, callbacks=[callback])
+        if early_stopping_epochs != None:
+            callback = EarlyStopping( monitor='val_loss', patience=ES_EPOCHS, mode='min', restore_best_weights=True)
+            history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
+                , validation_data=val_generator, callbacks=[callback])
+        else:
+            history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
+                , validation_data=val_generator)
         return history
 
     def evaluate(self):
