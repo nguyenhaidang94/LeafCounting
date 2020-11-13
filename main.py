@@ -24,9 +24,9 @@ def run():
             loss = model.evaluate()
             print("Loss: {}".format(loss))
             losses.append(loss)
-        # print("Save model")
-        # model.save()
         print("Mean loss: {}".format(np.mean(losses)))
+        print("Save the last model")
+        model.save()
         send_email("Prim info", "Training has finished!")
     except Exception as e:
         traceback.print_exc()
