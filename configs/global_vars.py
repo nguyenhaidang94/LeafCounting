@@ -12,7 +12,7 @@ BATCH_SIZE = 6
 N_EPOCHS = 50
 TRAIN_BASE_MODEL = True
 # early stopping epochs
-ES_EPOCHS = 10
+ES_EPOCHS = 8
 # for data augmentation
 ROTATION_RANGE = 170
 ZOOM_RANGE = [1.0, 1.1]

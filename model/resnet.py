@@ -7,6 +7,7 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras import regularizers
 
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
@@ -45,7 +46,7 @@ class Resnet(object):
             base.trainable = False
         x = Flatten()(base.output)
         x = Dense(1024, activation='tanh')(x)
-        x = Dense(512, activation='tanh')(x)
+        x = Dense(512, activation='tanh', activity_regularizer=regularizers.l2(0.2))(x)
         x = Dense(100, activation='tanh')(x)
         x = Dense(1, activation='linear')(x)
         self.model = Model(inputs=base.inputs, outputs=x)
