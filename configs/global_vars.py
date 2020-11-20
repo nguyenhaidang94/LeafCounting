@@ -19,6 +19,8 @@ ROTATION_RANGE = 170
 ZOOM_RANGE = [1.0, 1.1]
 HORIZONTAL_FLIP = True
 VERTICAL_FLIP = True
+# how many time running model
+N_RUN = 3
 # email notification
 EMAIL_USER = '10ed80cd1b6c5e'
 EMAIL_PASSWORD = '5e36061c1a1913'
