@@ -73,6 +73,10 @@ class Resnet(object):
                 , validation_data=val_generator)
         return history
 
+    def loss_in_test_set(self):
+        y_predict = self._predict(self.X_test)
+        return eval_utils.mse(self.y_test, y_predict)
+
     def evaluate(self):
         y_predict = self._predict(self.X_test)
         mse = eval_utils.mse(self.y_test, y_predict)
@@ -85,15 +89,15 @@ class Resnet(object):
         print("Mean squared error:", mse)
         print("Mean absolute error:", mae)
         print("Mean absolute difference in count:", adic)
-        print("Accuracy: {}%", acc*100)
-        print("Accuracy +-1: {}%", acc_diff1*100)
-        print("Accuracy +-2: {}%", acc_diff2*100)
+        print("Accuracy: {}%".format(acc*100))
+        print("Accuracy +-1: {}%".format(acc_diff1*100))
+        print("Accuracy +-2: {}%".format(acc_diff2*100))
 
         df = pd.DataFrame()
         df['y_true'] = self.y_test
         df['y_predict'] = y_predict
         df['y_predict_rounded'] = y_predict_rounded
-        result_file = os.path.join(RESULT_DIR, "result_{}".format(get_current_time()))
+        result_file = os.path.join(RESULT_DIR, "result_{}.csv".format(get_current_time()))
         print("Save result to file: {}".format(result_file))
         df.to_csv(result_file, index=False)
 
