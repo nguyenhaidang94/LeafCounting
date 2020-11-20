@@ -12,8 +12,7 @@ from tensorflow.keras import regularizers
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
 from configs.global_vars import MODEL_DIR
-from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP\
-    , WIDTH_SHIFT_RANGE, HEIGHT_SHIFT_RANGE
+from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP
 
 class Resnet(object):
     
