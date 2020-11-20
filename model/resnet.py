@@ -45,9 +45,8 @@ class Resnet(object):
         if train_base_model == False:
             base.trainable = False
         x = Flatten()(base.output)
-        x = Dense(1024, activation='tanh')(x)
-        x = Dense(512, activation='tanh', activity_regularizer=regularizers.l2(0.2))(x)
-        x = Dense(100, activation='tanh')(x)
+        x = Dense(1024, activation='relu')(x)
+        x = Dense(512, activation='relu', activity_regularizer=regularizers.l2(0.2))(x)
         x = Dense(1, activation='linear')(x)
         self.model = Model(inputs=base.inputs, outputs=x)
 
@@ -59,8 +58,7 @@ class Resnet(object):
 
     def train(self, batch_size, n_epochs, early_stopping_epochs=None):
         train_datagen = ImageDataGenerator(rotation_range=ROTATION_RANGE, zoom_range=ZOOM_RANGE\
-            , horizontal_flip=HORIZONTAL_FLIP, vertical_flip=VERTICAL_FLIP\
-            , width_shift_range=WIDTH_SHIFT_RANGE, height_shift_range=HEIGHT_SHIFT_RANGE)
+            , horizontal_flip=HORIZONTAL_FLIP, vertical_flip=VERTICAL_FLIP)
         train_generator = train_datagen.flow(self.X_train, self.y_train, batch_size=batch_size)
         val_datagen = ImageDataGenerator()
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
