@@ -2,6 +2,7 @@ from tensorflow.keras.optimizers import Adam
 
 DATA_DIR = "/ldaphome/dhai/prim/CVPPP2017_LCC_training"
 MODEL_DIR = "/ldaphome/dhai/prim/models"
+RESULT_DIR = "/ldaphome/dhai/prim/results"
 SUB_DIRS = ['A1', 'A2', 'A3', 'A4']
 IMAGE_SIZE = (320, 320, 3)
 TRAIN_RATIO = 0.5

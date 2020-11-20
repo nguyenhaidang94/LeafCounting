@@ -1,6 +1,7 @@
 import time
 import os
 import numpy as np
+import pandas as pd
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
@@ -11,7 +12,8 @@ from tensorflow.keras import regularizers
 
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
-from configs.global_vars import MODEL_DIR
+from utils import eval_utils
+from configs.global_vars import MODEL_DIR, RESULT_DIR
 from configs.global_vars import ROTATION_RANGE, ZOOM_RANGE, HORIZONTAL_FLIP, VERTICAL_FLIP
 
 class Resnet(object):
@@ -26,10 +28,9 @@ class Resnet(object):
         self.y_test = None
         self.image_size = None
 
-    def _preprocess_data(self, batch_size):
-        test_datagen = ImageDataGenerator()
-        test_generator = test_datagen.flow(self.X_test, self.y_test, batch_size=batch_size)
-        return train_generator, val_generator, test_generator
+    def _predict(self, X):
+        y_predict = self.model.predict(X)
+        return np.ravel(y_predict)
 
     def load_data(self, base_dir, sub_dirs, image_size, train_ratio, val_ratio):
         self.image_size = image_size
@@ -45,7 +46,8 @@ class Resnet(object):
             base.trainable = False
         x = Flatten()(base.output)
         x = Dense(1024, activation='relu')(x)
-        x = Dense(512, activation='relu', activity_regularizer=regularizers.l2(0.2))(x)
+        # x = Dense(512, activation='relu', activity_regularizer=regularizers.l2(0.2))(x)
+        x = Dense(512, activation='relu')(x)
         x = Dense(1, activation='linear')(x)
         self.model = Model(inputs=base.inputs, outputs=x)
 
@@ -72,11 +74,32 @@ class Resnet(object):
         return history
 
     def evaluate(self):
-        y_test_np = np.array(self.y_test)
-        return self.model.evaluate(self.X_test, y_test_np)
+        y_predict = self._predict(self.X_test)
+        mse = eval_utils.mse(self.y_test, y_predict)
+        mae = eval_utils.mae(self.y_test, y_predict)
+        y_predict_rounded = np.rint(y_predict)
+        adic = eval_utils.mae(self.y_test, y_predict_rounded)
+        acc = eval_utils.acc(self.y_test, y_predict_rounded)
+        acc_diff1 = eval_utils.acc_diff1(self.y_test, y_predict_rounded)
+        acc_diff2 = eval_utils.acc_diff2(self.y_test, y_predict_rounded)
+        print("Mean squared error:", mse)
+        print("Mean absolute error:", mae)
+        print("Mean absolute difference in count:", adic)
+        print("Accuracy: {}%", acc*100)
+        print("Accuracy +-1: {}%", acc_diff1*100)
+        print("Accuracy +-2: {}%", acc_diff2*100)
+
+        df = pd.DataFrame()
+        df['y_true'] = self.y_test
+        df['y_predict'] = y_predict
+        df['y_predict_rounded'] = y_predict_rounded
+        result_file = os.path.join(RESULT_DIR, "result_{}".format(get_current_time()))
+        print("Save result to file: {}".format(result_file))
+        df.to_csv(result_file, index=False)
 
     def save(self):
         model_folder = os.path.join(MODEL_DIR, "model_{}".format(get_current_time()))
+        print("Save model to folder: {}".format(model_folder))
         self.model.save(model_folder)
 
     def predict(self, img_path):

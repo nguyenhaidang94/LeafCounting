@@ -61,7 +61,10 @@ class DataLoader(object):
             X_test_full = X_test_full + X_test
             y_test_full = y_test_full + y_test  
         X_train_full = np.reshape(X_train_full, (len(X_train_full), w, h, c) )
+        y_train_full = np.array(y_train_full)
         X_val_full = np.reshape(X_val_full, (len(X_val_full), w, h, c) )
+        y_val_full = np.array(y_val_full)
         X_test_full = np.reshape(X_test_full, (len(X_test_full), w, h, c) )
+        y_test_full = np.array(y_test_full)
 
         return X_train_full, y_train_full, X_val_full, y_val_full, X_test_full, y_test_full

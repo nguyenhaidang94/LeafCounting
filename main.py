@@ -9,11 +9,12 @@ N = 3
 
 def run():
     try:
-        model = Resnet()
-        print("Load data")
-        model.load_data(DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO)
+        models = []
         losses = []
         for i in range(N):
+            model = Resnet()
+            print("Load data")
+            model.load_data(DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO)
             print("Build model")
             model.build(train_base_model=TRAIN_BASE_MODEL)
             print("Compile model")
@@ -24,9 +25,13 @@ def run():
             loss = model.evaluate()
             print("Loss: {}".format(loss))
             losses.append(loss)
+            models.append(model)
         print("Mean loss: {}".format(np.mean(losses)))
-        print("Save the last model")
-        model.save()
+        print("Use the best model to evaluate")
+        best_model_idx = np.argmin(losses)
+        models[best_model_idx].evaluate()
+        print("Save model")
+        models[best_model_idx].save()
         send_email("Prim info", "Training has finished!")
     except Exception as e:
         traceback.print_exc()
