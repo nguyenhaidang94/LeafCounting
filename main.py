@@ -3,7 +3,7 @@ import numpy as np
 from configs.global_vars import DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO\
     , OPTIMIZER, BATCH_SIZE, N_EPOCHS, ES_EPOCHS
 from configs.global_vars import N_RUN
-from model.resnet import Resnet
+from model.my_model import MyModel
 from utils.mail_utils import send_email
 
 def run():
@@ -11,7 +11,7 @@ def run():
         models = []
         losses = []
         for i in range(N_RUN):
-            model = Resnet()
+            model = MyModel()
             print("Load data")
             model.load_data(DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO)
             print("Build model")

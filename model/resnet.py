@@ -1,7 +1,3 @@
-import time
-import os
-import numpy as np
-import pandas as pd
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import Dense
