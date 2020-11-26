@@ -11,7 +11,6 @@ LEARNING_RATE = 1e-3
 OPTIMIZER = Adam(learning_rate=LEARNING_RATE)
 BATCH_SIZE = 6
 N_EPOCHS = 50
-TRAIN_BASE_MODEL = True
 # early stopping epochs
 ES_EPOCHS = 8
 # for data augmentation
