@@ -3,8 +3,8 @@ import os
 import numpy as np
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import regularizers
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 from dataloader.dataloader import DataLoader
 from utils.time_utils import get_current_time
@@ -45,20 +45,21 @@ class BaseModel(object):
     def summary(self):
         self.model.summary()
 
-    def train(self, batch_size, n_epochs, early_stopping_epochs=None):
+    def train(self, batch_size, n_epochs, saved_folder):
         train_datagen = ImageDataGenerator(rotation_range=ROTATION_RANGE, zoom_range=ZOOM_RANGE\
             , horizontal_flip=HORIZONTAL_FLIP, vertical_flip=VERTICAL_FLIP)
         train_generator = train_datagen.flow(self.X_train, self.y_train, batch_size=batch_size)
         val_datagen = ImageDataGenerator()
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
-        if early_stopping_epochs != None:
-            callback = EarlyStopping( monitor='val_loss', patience=early_stopping_epochs, mode='min', restore_best_weights=True)
-            history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
-                , validation_data=val_generator, callbacks=[callback])
-        else:
-            history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
-                , validation_data=val_generator)
+
+        checkpoint_filepath = "{val_loss:.2f}-{epoch:02d}_" + get_current_time() + ".hdf5"
+        checkpoint_filepath = os.path.join(saved_folder, checkpoint_filepath)
+        model_checkpoint_callback = ModelCheckpoint(filepath=checkpoint_filepath\
+            , save_weights_only=True, monitor='val_loss', mode='min', save_best_only=True)
+        
+        history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
+            , validation_data=val_generator, callbacks=[model_checkpoint_callback])
         return history
 
     def loss_in_test_set(self):

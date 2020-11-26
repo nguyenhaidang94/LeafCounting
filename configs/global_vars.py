@@ -10,9 +10,7 @@ VAL_RATIO = 0.25
 LEARNING_RATE = 1e-3
 OPTIMIZER = Adam(learning_rate=LEARNING_RATE)
 BATCH_SIZE = 6
-N_EPOCHS = 70
-# early stopping epochs
-ES_EPOCHS = 10
+N_EPOCHS = 100
 # for data augmentation
 ROTATION_RANGE = 170
 ZOOM_RANGE = [1.0, 1.1]
