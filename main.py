@@ -1,7 +1,7 @@
 import traceback
 import numpy as np
 from configs.global_vars import DATA_DIR, SUB_DIRS, IMAGE_SIZE, TRAIN_RATIO, VAL_RATIO\
-    , OPTIMIZER, BATCH_SIZE, N_EPOCHS, ES_EPOCHS
+    , OPTIMIZER, BATCH_SIZE, N_EPOCHS
 from configs.global_vars import N_RUN, MODEL_DIR
 from model.my_model import MyModel
 from utils.mail_utils import send_email

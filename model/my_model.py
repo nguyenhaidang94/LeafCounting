@@ -1,5 +1,6 @@
 from tensorflow import keras
 from tensorflow.keras import layers
+from model.base_model import BaseModel
 
 class MyModel(BaseModel):
 
