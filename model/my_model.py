@@ -21,9 +21,6 @@ class MyModel(BaseModel):
         x = layers.Conv2D(256, (3,3), activation="relu", padding="same",)(x)
         x = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(x)
 
-        x = layers.Conv2D(512, (3,3), activation="relu", padding="same",)(x)
-        x = layers.MaxPooling2D(pool_size=(2, 2), padding="same")(x)
-
         x = layers.Flatten()(x)
         x = layers.Dense(256, activation='relu')(x)
         x = layers.Dense(128, activation='relu')(x)
