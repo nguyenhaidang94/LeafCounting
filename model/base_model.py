@@ -1,5 +1,6 @@
 import time
 import os
+import glob
 import numpy as np
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -23,6 +24,7 @@ class BaseModel(object):
         self.X_test = None
         self.y_test = None
         self.image_size = None
+        self.weights_file_pattern = None
 
     def _predict(self, X):
         y_predict = self.model.predict(X)
@@ -53,11 +55,14 @@ class BaseModel(object):
         val_generator = val_datagen.flow(self.X_val, self.y_val, batch_size=batch_size)
         steps_per_epoch = int(self.X_train.shape[0]/batch_size)
 
-        checkpoint_filepath = "{val_loss:.2f}-{epoch:02d}_" + get_current_time() + ".hdf5"
+        file_postfix = '_' + get_current_time() + ".hdf5"
+        checkpoint_filepath = "{val_loss:.2f}-{epoch:02d}" + file_postfix
         checkpoint_filepath = os.path.join(saved_folder, checkpoint_filepath)
         model_checkpoint_callback = ModelCheckpoint(filepath=checkpoint_filepath\
             , save_weights_only=True, monitor='val_loss', mode='min', save_best_only=True)
         
+        self.weights_file_pattern = os.path.join(saved_folder, '*' + file_postfix.replace('-', '\-'))
+
         history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
             , validation_data=val_generator, callbacks=[model_checkpoint_callback])
         return history
@@ -101,3 +106,15 @@ class BaseModel(object):
         x = np.reshape(x, (1, w, h, c))
         result = self.model.predict(x)
         return int(result[0][0])
+
+    def load_weights(self, weights_file):
+        self.model.load_weights(weights_file)
+
+    def load_best_weights(self):
+        weights_files = glob.glob(self.weights_file_pattern)
+        if len(weights_files) == 0:
+            print("Couldn't find files with pattern {}".format(self.weights_file_pattern))
+        else:
+            best_weights_file = sorted(weights_files)[0]
+            print("Best weights file: {}".format(best_weights_file))
+            self.load_weights(best_weights_file)

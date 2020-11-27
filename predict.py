@@ -1,18 +1,23 @@
 import os
 import numpy as np
-from tensorflow.keras.models import load_model
 import traceback
 from configs.global_vars import MODEL_DIR, DATA_DIR, IMAGE_SIZE
+from model.my_model import MyModel
 from dataloader.dataloader import DataLoader
 from utils.mail_utils import send_email
 
-MODEL_NAME = ''
+WEIGHTS_FILE = ''
 
 def run():
     try:
-        print("Load model")
-        model_path = os.path.join(MODEL_DIR, MODEL_NAME)
-        model = load_model(model_path)
+        print("Create model")
+        model = MyModel()
+        model.image_size = IMAGE_SIZE
+        print("Build model")
+        model.build()
+        print("Load weights")
+        weights_file = os.path.join(MODEL_DIR, WEIGHTS_FILE)
+        model.load_weights(weights_file)
         print("Load samples")
         img_paths = []
         img_paths.append(os.path.join(DATA_DIR, 'A1', 'plant001_rgb.png'))

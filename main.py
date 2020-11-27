@@ -20,6 +20,8 @@ def run():
             model.compile(optimizer=OPTIMIZER)
             print("Train model")
             model.train(BATCH_SIZE, N_EPOCHS, MODEL_DIR)
+            print("Load the best weights")
+            model.load_best_weights()
             print("Calculate loss on test set")
             loss = model.loss_in_test_set()
             print("Loss: {}".format(loss))
