@@ -3,7 +3,6 @@ import numpy as np
 import traceback
 from configs.global_vars import MODEL_DIR, DATA_DIR, IMAGE_SIZE
 from model.my_model import MyModel
-from dataloader.dataloader import DataLoader
 from utils.mail_utils import send_email
 
 WEIGHTS_FILE = ''
@@ -33,9 +32,7 @@ def run():
         for i in range(len(img_paths)):
             img_path = img_paths[i]
             print("Image: {}".format(img_path))
-            x = DataLoader().load_rgb_img(img_path, target_size=(w,h))
-            x = np.reshape(x, (1, w, h, c))
-            result = model.predict(x)
+            result = model.predict(img_path)
             print("Number of leaves: {}".format(int(result[0][0])))
         send_email("Prim info", "Prediction has finished!")
     except Exception as e:
