@@ -61,7 +61,7 @@ class BaseModel(object):
         model_checkpoint_callback = ModelCheckpoint(filepath=checkpoint_filepath\
             , save_weights_only=True, monitor='val_loss', mode='min', save_best_only=True)
         
-        self.weights_file_pattern = os.path.join(saved_folder, '*' + file_postfix.replace('-', '\-'))
+        self.weights_file_pattern = os.path.join(saved_folder, '*' + file_postfix)
 
         history = self.model.fit(train_generator, epochs=n_epochs, steps_per_epoch=steps_per_epoch\
             , validation_data=val_generator, callbacks=[model_checkpoint_callback])
