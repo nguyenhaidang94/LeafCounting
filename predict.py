@@ -33,7 +33,7 @@ def run():
             img_path = img_paths[i]
             print("Image: {}".format(img_path))
             result = model.predict(img_path)
-            print("Number of leaves: {}".format(int(result[0][0])))
+            print("Number of leaves: {}".format(result))
         send_email("Prim info", "Prediction has finished!")
     except Exception as e:
         traceback.print_exc()
